@@ -6,7 +6,8 @@
 	String basePath2 = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	Long uid = (Long)request.getSession().getAttribute("uid");
+	Integer uid = (Integer)request.getSession().getAttribute("uid");
+	Integer serverId = (Integer)request.getSession().getAttribute("serverId");
 	String userName = (String)request.getSession().getAttribute("name");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -135,21 +136,19 @@ input[type=button] {
 </style>
 <script>
 		var path = '<%=basePath%>';
-		var uid='<%=uid%>';
-		if(uid==-1){
-			location.href="<%=basePath2%>";
-		}
+		var uid = Math.random() * 10 + 1;
 		var from=uid;
-		var fromName='${name}';
-		var to=uid==1?2:1;
+		var fromName='匿名';
+		var tos = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+		var to = <%=serverId%>;
 		
 		var websocket;
 		if ('WebSocket' in window) {
-			websocket = new WebSocket("ws://" + path + "ws?uid="+uid);
+			websocket = new WebSocket("ws://" + path + "ws?uid=" + uid);
 		} else if ('MozWebSocket' in window) {
-			websocket = new MozWebSocket("ws://" + path + "ws"+uid);
+			websocket = new MozWebSocket("ws://" + path + "ws" + uid);
 		} else {
-			websocket = new SockJS("http://" + path + "ws/sockjs"+uid);
+			websocket = new SockJS("http://" + path + "ws/sockjs" + uid);
 		}
 		websocket.onopen = function(event) {
 			console.log("WebSocket:已连接");
@@ -217,19 +216,24 @@ input[type=button] {
 				 }else{
 					 code = e.which; // Firefox
 				 }
-				if(code==13){ 
-					sendMsg();            
+				if(code==13){
+					sendMsg();
 				}
 			}
 			
 			function clearAll(){
 				$("#content").empty();
 			}
+		$(function () {
+			$("#content").append("<div class='fmsg'><label class='name'>客服" + to + "&nbsp;"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</label>" +
+					"<div class='fmsg_text'>您好，很高兴为您服务，请问您要咨询什么问题呢？</div></div>");
+		});
 		</script>
 </head>
 <body>
-	欢迎：<%= userName%>
-	<div id="content"></div>
+	<div id="content">
+
+	</div>
 	<input type="text" placeholder="请输入要发送的信息" id="msg" class="msg" onkeydown="send(event)">
 	<input type="button" value="发送" class="send" onclick="sendMsg()" >
 	<input type="button" value="清空" class="clear" onclick="clearAll()">

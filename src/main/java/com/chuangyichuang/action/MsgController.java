@@ -1,7 +1,11 @@
-package com.chuangyichuang.websocket;
+package com.chuangyichuang.action;
 
+import com.chuangyichuang.entity.Message;
+import com.chuangyichuang.entity.User;
+import com.chuangyichuang.websocket.ChuangChuangWebSocketHandler;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,10 +15,12 @@ import org.springframework.web.socket.TextMessage;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by huzuxing on 16/12/29.
@@ -75,4 +81,27 @@ public class MsgController {
         handler.broadcast(new TextMessage(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().toJson(msg)));
     }
 
+    @RequestMapping(value = "ask", method = RequestMethod.GET)
+    public String ask(HttpServletRequest request, ModelMap map) {
+        Random rand = new Random();
+        int uid = rand.nextInt(10);
+        request.getSession().setAttribute("uid", uid);
+        request.getSession().setAttribute("name", "匿名");
+        return "ask";
+    }
+    @RequestMapping(value = "ask", method = RequestMethod.POST)
+    public void asksend(ModelMap map) {
+
+
+    }
+
+    @RequestMapping(value = "answer", method = RequestMethod.GET)
+    public String answer(HttpServletRequest request, ModelMap map) {
+        Random rand = new Random();
+        int uid = rand.nextInt(10);
+        int serverId = uid + 10;
+        request.getSession().setAttribute("serverId", serverId);
+        request.getSession().setAttribute("name", "客服" + uid);
+        return "answer";
+    }
 }

@@ -1,8 +1,8 @@
 package com.chuangyichuang.websocket;
 
+import com.chuangyichuang.entity.Message;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 

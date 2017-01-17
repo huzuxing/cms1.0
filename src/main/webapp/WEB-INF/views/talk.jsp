@@ -159,7 +159,8 @@ input[type=button] {
 			var data=JSON.parse(event.data);
 			console.log("WebSocket:收到一条消息",data);
 			var textCss=data.from==-1?"sfmsg_text":"fmsg_text";
-			$("#content").append("<div class='fmsg'><label class='name'>"+data.fromName+"&nbsp;"+data.date+"</label><div class='"+textCss+"'>"+data.text+"</div></div>");
+			$("#content").append("<div class='fmsg'><label class='name'>"+data.fromName+"&nbsp;"+data.date+"</label>" +
+					"<div class='"+textCss+"'>"+data.text+"</div></div>");
 			scrollToBottom();
 		};
 		websocket.onerror = function(event) {
@@ -181,7 +182,8 @@ input[type=button] {
 					data["to"]=to;
 					data["text"]=v;
 					websocket.send(JSON.stringify(data));
-					$("#content").append("<div class='tmsg'><label class='name'>我&nbsp;"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</label><div class='tmsg_text'>"+data.text+"</div></div>");
+					$("#content").append("<div class='tmsg'><label class='name'>我&nbsp;"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</label>" +
+							"<div class='tmsg_text'>"+data.text+"</div></div>");
 					scrollToBottom();
 					$("#msg").val("");
 				}

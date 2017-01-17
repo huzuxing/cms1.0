@@ -18,13 +18,13 @@ import javax.annotation.Resource;
 public class WebSocketConfig extends WebMvcConfigurerAdapter
         implements WebSocketConfigurer{
 
-//    @Resource
-//    ChuangChuangWebSocketHandler handler;
+    @Resource
+    ChuangChuangWebSocketHandler handler;
 
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         System.out.println("handler adapter ...");
-        webSocketHandlerRegistry.addHandler(new ChuangChuangWebSocketHandler(), "/ws").addInterceptors(new HandShake());
-        webSocketHandlerRegistry.addHandler(new ChuangChuangWebSocketHandler(), "/ws/sockjs")
+        webSocketHandlerRegistry.addHandler(handler, "/ws").addInterceptors(new HandShake());
+        webSocketHandlerRegistry.addHandler(handler, "/ws/sockjs")
                .addInterceptors(new HandShake()).withSockJS();
     }
 }

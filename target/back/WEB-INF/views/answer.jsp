@@ -6,7 +6,7 @@
 	String basePath2 = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	Long uid = (Long)request.getSession().getAttribute("uid");
+	Integer uid = (Integer)request.getSession().getAttribute("uid");
 	String userName = (String)request.getSession().getAttribute("name");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -141,7 +141,8 @@ input[type=button] {
 		}
 		var from=uid;
 		var fromName='${name}';
-		var to=uid==1?2:1;
+		var tos = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+		var to = -1;
 		
 		var websocket;
 		if ('WebSocket' in window) {
@@ -159,6 +160,7 @@ input[type=button] {
 			var data=JSON.parse(event.data);
 			console.log("WebSocket:收到一条消息",data);
 			var textCss=data.from==-1?"sfmsg_text":"fmsg_text";
+			to = data.from;
 			$("#content").append("<div class='fmsg'><label class='name'>"+data.fromName+"&nbsp;"+data.date+"</label>" +
 					"<div class='"+textCss+"'>"+data.text+"</div></div>");
 			scrollToBottom();
@@ -228,8 +230,9 @@ input[type=button] {
 		</script>
 </head>
 <body>
-	欢迎：<%= userName%>
-	<div id="content"></div>
+	<div id="content">
+
+	</div>
 	<input type="text" placeholder="请输入要发送的信息" id="msg" class="msg" onkeydown="send(event)">
 	<input type="button" value="发送" class="send" onclick="sendMsg()" >
 	<input type="button" value="清空" class="clear" onclick="clearAll()">

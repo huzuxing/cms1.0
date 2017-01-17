@@ -1,4 +1,4 @@
-package com.chuangyichuang.websocket;
+package com.chuangyichuang.entity;
 
 public class User {
 
